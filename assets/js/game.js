@@ -4,17 +4,29 @@
 //  * Defeat each enemy-robot
 //"LOSE" - Player robot's health is zero or less.
 
+var fightOrSkip = function () {
+    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
+    if (!promptFight) {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
+    promptFight = promptFight.toLowerCase();
+    if (promptFight === "skip") {
+        var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+        if (confirmSkip) {
+            window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+            playerInfo.playerMoney = playerInfo.money - 10;
+            return true;
+            shop();
+        }
+    }
+    return false;
+}
+
 var fight = function (enemy) {
     while (playerInfo.health > 0 && enemy.health > 0) {
-        var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? enter 'FIGHT' or 'SKIP' to choose.")
-        if (promptFight === "skip" || promptFight === "SKIP") {
-            var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-            if (confirmSkip) {
-                window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-                playerInfo.money = Math.max(0, playerInfo.money - 15);
-                console.log("playerInfo.money", playerInfo.money);
-                break;
-            }
+        if (fightOrSkip()) {
+            break;
         }
         var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
         enemy.health = Math.max(0, enemy.health - damage);
@@ -115,7 +127,6 @@ var randomNumber = function(min, max) {
 
 var getPlayerName = function () {
     var name = "";
-    debugger;
     while (name === "" || name === null) {
         name = prompt("What is your robot's name?");
     }
