@@ -90,6 +90,19 @@ var endGame = function(){
     window.alert("The game has now ended. Let's see how you did!");
     if (playerInfo.health > 0) {
         window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
+        var highScore = parseInt(localStorage.getItem("highScore"));
+        if (highScore === null) {
+            highScore = 0;
+        }
+        var bestPlayer = localStorage.getItem("bestPlayer");
+        if(playerInfo.money < highScore) {
+            window.alert("You did not beat the high score, " + bestPlayer + " has the highest score at " + highScore + ".");
+        }
+        else {
+            localStorage.setItem("highScore", playerInfo.money);
+            localStorage.setItem("bestPlayer", playerInfo.name);
+            window.alert("You just got the best high-score at " + playerInfo.money + ". Your name will now be immortalized forever as the best Robot Gladator!");
+        }
     }
     else {
         window.alert("You've lost your robot in battle.")
@@ -142,7 +155,7 @@ var getPlayerName = function () {
 
 var playerInfo = {
     name: getPlayerName(),
-    health: 100,
+    health: 115,
     attack: 10,
     money: 10,
     reset: function() {
